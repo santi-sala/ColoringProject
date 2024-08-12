@@ -6,7 +6,7 @@ using UnityEngine;
 public class WholeSpriteBrush : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private Color brushColor = Color.red;
+    [SerializeField] private Color _brushColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,7 @@ public class WholeSpriteBrush : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             RaycastMultipleSprites();
         }
@@ -84,6 +84,6 @@ public class WholeSpriteBrush : MonoBehaviour
             return;
         }
 
-        spriteRenderer.color = brushColor;
+        spriteRenderer.color = _brushColor;
     }
 }
