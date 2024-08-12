@@ -203,7 +203,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -409,6 +409,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lineRendererPrefab: {fileID: 6254255555247914314, guid: d615fdbacfe9a5b46823c629ff3f666a, type: 3}
+  _brushColor: {r: 0.93962264, g: 0.47088853, b: 0.18969738, a: 1}
+  _minimumDistanceBetweenPoints: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

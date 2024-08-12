@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2436840551655273403}
   - component: {fileID: 6254255555247914314}
   m_Layer: 0
-  m_Name: Line
+  m_Name: LinePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 59d09c52fa2874f4cb9d2f07f837722c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,8 +127,8 @@ LineRenderer:
     numCornerVertices: 5
     numCapVertices: 5
     alignment: 1
-    textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureMode: 1
+    textureScale: {x: 8, y: -1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
