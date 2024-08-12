@@ -18,7 +18,7 @@ public class WholeSpriteBrush : MonoBehaviour
     {
         if(Input.GetMouseButton(0))
         {
-            RaycastSprite();
+            RaycastMultipleSprites();
         }
     }
 
@@ -35,6 +35,44 @@ public class WholeSpriteBrush : MonoBehaviour
 
         ColorSprite(rayHit.collider);
         Debug.Log(rayHit.collider.name);
+    }
+
+    private void RaycastMultipleSprites()
+    {
+        Vector2 origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = Vector2.zero;
+        RaycastHit2D[] rayHits = Physics2D.RaycastAll(origin, direction);
+
+        if(rayHits.Length == 0)
+        {
+            return;
+        }
+
+        int highestOrderInlayer = -1000;
+        int topIndex = -1;
+
+        for(int i = 0; i < rayHits.Length; i++)
+        {
+            SpriteRenderer spriteRenderer = rayHits[i].collider.GetComponent<SpriteRenderer>();
+
+            if(spriteRenderer == null)
+            {
+                continue;
+            }
+
+            int orderInLayer = spriteRenderer.sortingOrder;
+
+            if(orderInLayer > highestOrderInlayer)
+            {
+                highestOrderInlayer = orderInLayer;
+                topIndex = i;
+            }
+        }
+
+        Collider2D topCollider = rayHits[topIndex].collider;
+        ColorSprite(topCollider);
+
+
     }
 
     private void ColorSprite(Collider2D collider)
