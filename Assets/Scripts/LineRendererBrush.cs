@@ -33,8 +33,6 @@ public class LineRendererBrush : MonoBehaviour
         }
     }
 
-    
-
     private void CreateLine()
     {
         RaycastHit raycastHit;
