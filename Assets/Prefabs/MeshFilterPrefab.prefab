@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4362554920060995827}
   - component: {fileID: 4369474329071505595}
   - component: {fileID: 2043306684045300274}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MeshFilterPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
