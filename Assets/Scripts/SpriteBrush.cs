@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class SpriteBrush : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private Color _brushColor;
+    [SerializeField] private int _brushSize;
 
     // Start is called before the first frame update
     void Start()
@@ -54,8 +56,61 @@ public class SpriteBrush : MonoBehaviour
         }
 
         Collider2D topCollider = rayHits[topIndex].collider;
-        ColorSprite(topCollider);
 
+        ColorSpriteAtPosition(topCollider, rayHits[topIndex].point);
+
+    }
+
+    private void ColorSpriteAtPosition(Collider2D collider, Vector2 hitPoint)
+    {
+        SpriteRenderer spriteRenderer = collider.GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            return;
+        }
+
+        // Converting the hit point (World space) to a texture point (Local space)        
+        Vector2 texturePoint = WorldToTexturePoint(spriteRenderer, hitPoint);
+
+        // Getting the sprite copy
+        Sprite spriteCopy = spriteRenderer.sprite;
+
+        // Creating a new texture to modify
+        Texture2D newTexture = new Texture2D(spriteCopy.texture.width, spriteCopy.texture.height);
+
+        Graphics.CopyTexture(spriteCopy.texture, newTexture);
+
+        // Copying the original texture to the new texture
+        for (int i = -_brushSize / 2; i < _brushSize / 2; i++)
+        {
+            for (int j = -_brushSize / 2; j < _brushSize / 2; j++)
+            {
+                int pixelX = i + (int)texturePoint.x;
+                int pixelY = j + (int)texturePoint.y;
+
+                Color pixelColor = _brushColor;
+
+                // Taking the alpha value from the original texture
+                pixelColor.a = spriteCopy.texture.GetPixel(pixelX, pixelY).a;
+
+                // Multiplying the color values to leave the black outline 
+                pixelColor = pixelColor * spriteCopy.texture.GetPixel(pixelX, pixelY);
+
+                newTexture.SetPixel(pixelX, pixelY, pixelColor);
+            }
+        }
+
+        newTexture.Apply();
+
+        // Creating a new sprite with the new texture (Basically a copy)
+        Sprite newSprite = Sprite.Create(newTexture, spriteCopy.rect, Vector2.one / 2, spriteCopy.pixelsPerUnit);
+
+        spriteRenderer.sprite = newSprite;
+    }
+
+    private Vector2 WorldToTexturePoint(SpriteRenderer spriteRenderer, Vector2 worldPosition)
+    {
+        return new Vector2(128, 384);
     }
 
     private void ColorSprite(Collider2D collider)
@@ -67,25 +122,32 @@ public class SpriteBrush : MonoBehaviour
             return;
         }
 
-        Texture2D texture = spriteRenderer.sprite.texture;
+        //Texture2D texture = spriteRenderer.sprite.texture;
+        Sprite spriteCopy = spriteRenderer.sprite;
+        Texture2D newTexture = new Texture2D(spriteCopy.texture.width, spriteCopy.texture.height);
 
-        for (int i = 0; i < texture.width; i++)
+        for (int i = 0; i < newTexture.width; i++)
         {
-            for (int j = 0; j < texture.height; j++)
+            for (int j = 0; j < newTexture.height; j++)
             {
                 Color pixelColor = _brushColor;
 
                 // Taking the alpha value from the original texture
-                pixelColor.a = texture.GetPixel(i, j).a;
+                pixelColor.a = spriteCopy.texture.GetPixel(i, j).a;
 
                 // Multiplying the color values to leave the black outline 
-                pixelColor = pixelColor * texture.GetPixel(i, j);
+                pixelColor = pixelColor * spriteCopy.texture.GetPixel(i, j);
 
-                texture.SetPixel(i, j, pixelColor);
+                newTexture.SetPixel(i, j, pixelColor);
             }
         }
 
-        texture.Apply();
+        newTexture.Apply();
+
+        // Creating a new sprite with the new texture (Basically a copy)
+        Sprite newSprite = Sprite.Create(newTexture, spriteCopy.rect, Vector2.one / 2, spriteCopy.pixelsPerUnit);
+
+        spriteRenderer.sprite = newSprite;
     }
 
 }

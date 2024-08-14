@@ -1573,27 +1573,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2037825004}
-  - component: {fileID: 2037825003}
+  - component: {fileID: 2037825005}
   m_Layer: 0
-  m_Name: WholeSpriteBrush
+  m_Name: SpriteBrush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2037825003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2037825002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8600d4575703944dba100048dcd4f15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _brushColor: {r: 0.744, g: 0.19864798, b: 0.19864798, a: 1}
 --- !u!4 &2037825004
 Transform:
   m_ObjectHideFlags: 0
@@ -1609,6 +1596,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2037825005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037825002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b3fb8507156de4793277488cefc5f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _brushColor: {r: 0.13964999, g: 0.665, b: 0.4898834, a: 1}
+  _brushSize: 300
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
