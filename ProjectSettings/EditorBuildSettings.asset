@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/03_MeshBrush.unity
     guid: da296e1ae46fa6a41af17e1ffb816a99
+  - enabled: 1
+    path: Assets/Scenes/04_MaskedSprite.unity
+    guid: 1624c405aea171e47ace795306c64e14
   m_configObjects: {}
