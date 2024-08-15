@@ -12,6 +12,7 @@ public class SpriteBrush : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private Color _brushColor;
     [SerializeField] private int _brushSize;
+    private Dictionary<int, Texture2D> _originalTextures = new Dictionary<int, Texture2D>();
 
     // Start is called before the first frame update
     void Start()
@@ -54,9 +55,7 @@ public class SpriteBrush : MonoBehaviour
                 ColorSpriteAtPosition(rayHits[i].collider, rayHits[i].point);
                 break;
             }
-
         }
-
     }
 
     private void RaycastMultipleSprites()
@@ -98,6 +97,12 @@ public class SpriteBrush : MonoBehaviour
         // Setting the current sprite renderer to the top sprite
         _currentSpriteRenderer = topCollider.GetComponent<SpriteRenderer>();
 
+        // Checking if we have the current original texture in the dictionary, if not adding it.
+        int spriteIndexInHierarchy = _currentSpriteRenderer.transform.GetSiblingIndex();
+        if(!_originalTextures.ContainsKey(spriteIndexInHierarchy))
+        {             
+            _originalTextures.Add(spriteIndexInHierarchy, _currentSpriteRenderer.sprite.texture);
+        }
 
         ColorSpriteAtPosition(topCollider, rayHits[topIndex].point);
 
@@ -116,6 +121,9 @@ public class SpriteBrush : MonoBehaviour
 
         // Getting the sprite copy
         Sprite spriteCopy = spriteRenderer.sprite;
+
+        int currentSpriteIndex = spriteRenderer.transform.GetSiblingIndex();
+        Texture2D originalTexture = _originalTextures[currentSpriteIndex];
 
         // Creating a new texture to modify
         Texture2D newTexture = new Texture2D(spriteCopy.texture.width, spriteCopy.texture.height);
@@ -136,7 +144,7 @@ public class SpriteBrush : MonoBehaviour
                 pixelColor.a = spriteCopy.texture.GetPixel(pixelX, pixelY).a;
 
                 // Multiplying the color values to leave the black outline 
-                pixelColor = pixelColor * spriteCopy.texture.GetPixel(pixelX, pixelY);
+                pixelColor = pixelColor * originalTexture.GetPixel(pixelX, pixelY);
 
                 newTexture.SetPixel(pixelX, pixelY, pixelColor);
             }
@@ -173,6 +181,7 @@ public class SpriteBrush : MonoBehaviour
         return texturePoint;
     }
 
+    /*
     private void ColorSprite(Collider2D collider)
     {
         SpriteRenderer spriteRenderer = collider.GetComponent<SpriteRenderer>();
@@ -209,5 +218,6 @@ public class SpriteBrush : MonoBehaviour
 
         spriteRenderer.sprite = newSprite;
     }
+    */
 
 }
