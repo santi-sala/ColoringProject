@@ -130,7 +130,8 @@ public class SpriteBrush : MonoBehaviour
 
         Graphics.CopyTexture(spriteCopy.texture, newTexture);
 
-        // Copying the original texture to the new texture
+        /*
+        // Painting in square shape
         for (int i = -_brushSize / 2; i < _brushSize / 2; i++)
         {
             for (int j = -_brushSize / 2; j < _brushSize / 2; j++)
@@ -149,6 +150,63 @@ public class SpriteBrush : MonoBehaviour
                 newTexture.SetPixel(pixelX, pixelY, pixelColor);
             }
         }
+        */
+
+        /*
+        // Painting in circle shape
+        for (int i = -_brushSize / 2; i < _brushSize / 2; i++)
+        {
+            for (int j = -_brushSize / 2; j < _brushSize / 2; j++)
+            {
+                int pixelX = i + (int)texturePoint.x;
+                int pixelY = j + (int)texturePoint.y;
+
+                Vector2 pixelPoint = new Vector2(pixelX, pixelY);
+
+                if (Vector2.Distance(pixelPoint, texturePoint) > _brushSize / 2)
+                {
+                    continue;
+                }
+
+                Color pixelColor = _brushColor;
+
+                // Taking the alpha value from the original texture
+                pixelColor.a = spriteCopy.texture.GetPixel(pixelX, pixelY).a;
+
+                // Multiplying the color values to leave the black outline 
+                pixelColor = pixelColor * originalTexture.GetPixel(pixelX, pixelY);
+
+                newTexture.SetPixel(pixelX, pixelY, pixelColor);
+            }
+        }
+        */
+
+        for (int i = -_brushSize / 2; i < _brushSize / 2; i++)
+        {
+            for (int j = -_brushSize / 2; j < _brushSize / 2; j++)
+            {
+                int pixelX = i + (int)texturePoint.x;
+                int pixelY = j + (int)texturePoint.y;
+
+                Vector2 pixelPoint = new Vector2(pixelX, pixelY);
+
+                float squaredRadius = i * i + j * j;
+                float factor = Mathf.Exp(-squaredRadius / _brushSize);
+
+                Color previousColor = spriteCopy.texture.GetPixel(pixelX, pixelY);
+                Color pixelColor = Color.Lerp(previousColor, _brushColor, factor);
+
+                // Taking the alpha value from the original texture
+                pixelColor.a = previousColor.a;
+
+                // Multiplying the color values to leave the black outline 
+                pixelColor *= originalTexture.GetPixel(pixelX, pixelY);
+
+                newTexture.SetPixel(pixelX, pixelY, pixelColor);
+            }
+        }
+
+
 
         newTexture.Apply();
 
