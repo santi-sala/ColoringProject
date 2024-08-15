@@ -181,6 +181,7 @@ public class SpriteBrush : MonoBehaviour
         }
         */
 
+        // Painting in circle shape with smooth edges
         for (int i = -_brushSize / 2; i < _brushSize / 2; i++)
         {
             for (int j = -_brushSize / 2; j < _brushSize / 2; j++)

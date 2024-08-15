@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/04_MaskedSprite.unity
     guid: 1624c405aea171e47ace795306c64e14
+  - enabled: 1
+    path: Assets/Scenes/05_GPUMaskedSprite.unity
+    guid: b20111f8ff6bffc47b8ab53627e0c34a
   m_configObjects: {}
