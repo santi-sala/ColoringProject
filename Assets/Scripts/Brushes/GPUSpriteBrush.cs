@@ -9,7 +9,8 @@ public class GPUSpriteBrush : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private Color _brushColor;
-    [SerializeField] private int _brushSize;
+    [Range(0.0001f, 0.1f)]
+    [SerializeField] private float _brushSize;
     [SerializeField] private Material _brushMaterial;
     private Dictionary<int, Texture2D> _originalTextures = new Dictionary<int, Texture2D>();
 
@@ -122,7 +123,7 @@ public class GPUSpriteBrush : MonoBehaviour
         Sprite spriteCopy = spriteRenderer.sprite;
 
         int currentSpriteIndex = spriteRenderer.transform.GetSiblingIndex();
-        Texture2D originalTexture = _originalTextures[currentSpriteIndex];
+        Texture2D copyTexture = _originalTextures[currentSpriteIndex];
 
         // Creating a new texture to modify
         Texture2D newTexture = new Texture2D(spriteCopy.texture.width, spriteCopy.texture.height);
@@ -131,12 +132,16 @@ public class GPUSpriteBrush : MonoBehaviour
 
         //Coloring using the GPU here
         _brushMaterial.SetTexture("_MainTex", newTexture);
+        _brushMaterial.SetTexture("_CopyTexture", copyTexture);
         _brushMaterial.SetColor("_Color", _brushColor);
+        //_brushMaterial.SetColor("_Color", Random.ColorHSV());
+        _brushMaterial.SetFloat("_BrushSize", _brushSize);
+        _brushMaterial.SetVector("_UVPosition", texturePoint / spriteCopy.texture.width);
 
         RenderTexture renderTexture = new RenderTexture(newTexture.width, newTexture.height, 0, RenderTextureFormat.ARGB32, 10);
         renderTexture.useMipMap = true;
 
-        Graphics.Blit(originalTexture, renderTexture, _brushMaterial);
+        Graphics.Blit(copyTexture, renderTexture, _brushMaterial);
 
         Graphics.CopyTexture(renderTexture, newTexture);
 

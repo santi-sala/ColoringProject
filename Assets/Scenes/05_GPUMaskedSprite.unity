@@ -1610,7 +1610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentSpriteRenderer: {fileID: 0}
   _brushColor: {r: 0.744, g: 0.36425003, b: 0.093, a: 1}
-  _brushSize: 30
+  _brushSize: 0.001
   _brushMaterial: {fileID: 2100000, guid: 40172b3fbd8b8124eb9dae3847816c67, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
