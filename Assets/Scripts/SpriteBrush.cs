@@ -2,9 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class SpriteBrush : MonoBehaviour
 {
+    [Header("Elements")]
+    [SerializeField] private SpriteRenderer _currentSpriteRenderer;
+
     [Header("Settings")]
     [SerializeField] private Color _brushColor;
     [SerializeField] private int _brushSize;
@@ -21,6 +25,38 @@ public class SpriteBrush : MonoBehaviour
         {
             RaycastMultipleSprites();
         }
+        else if (Input.GetMouseButton(0))
+        {
+            RaycastCurrentSprite();
+        }
+    }
+
+    private void RaycastCurrentSprite()
+    {
+        Vector2 origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = Vector2.zero;
+        RaycastHit2D[] rayHits = Physics2D.RaycastAll(origin, direction);
+
+        if (rayHits.Length == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < rayHits.Length; i++)
+        {
+            if (!rayHits[i].collider.TryGetComponent(out SpriteRenderer spriteRenderer))
+            {
+                continue;
+            }
+            
+            if (spriteRenderer == _currentSpriteRenderer)
+            {
+                ColorSpriteAtPosition(rayHits[i].collider, rayHits[i].point);
+                break;
+            }
+
+        }
+
     }
 
     private void RaycastMultipleSprites()
@@ -37,6 +73,7 @@ public class SpriteBrush : MonoBehaviour
         int highestOrderInlayer = -1000;
         int topIndex = -1;
 
+        // Finding the top sprite
         for (int i = 0; i < rayHits.Length; i++)
         {
             SpriteRenderer spriteRenderer = rayHits[i].collider.GetComponent<SpriteRenderer>();
@@ -55,7 +92,12 @@ public class SpriteBrush : MonoBehaviour
             }
         }
 
+        
         Collider2D topCollider = rayHits[topIndex].collider;
+
+        // Setting the current sprite renderer to the top sprite
+        _currentSpriteRenderer = topCollider.GetComponent<SpriteRenderer>();
+
 
         ColorSpriteAtPosition(topCollider, rayHits[topIndex].point);
 
@@ -69,7 +111,7 @@ public class SpriteBrush : MonoBehaviour
             return;
         }
 
-        // Converting the hit point (World space) to a texture point (Local space)        
+        // Converting the hit point (World space) to a texture point (Local space)   
         Vector2 texturePoint = WorldToTexturePoint(spriteRenderer, hitPoint);
 
         // Getting the sprite copy
