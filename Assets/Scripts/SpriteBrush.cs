@@ -109,8 +109,26 @@ public class SpriteBrush : MonoBehaviour
     }
 
     private Vector2 WorldToTexturePoint(SpriteRenderer spriteRenderer, Vector2 worldPosition)
-    {
-        return new Vector2(128, 384);
+    {        
+
+        Vector2 texturePoint = spriteRenderer.transform.InverseTransformPoint(worldPosition);
+
+        // Position between -.5 and .5
+        texturePoint.x /= spriteRenderer.bounds.size.x;
+        texturePoint.y /= spriteRenderer.bounds.size.y;
+
+        // Position between 0 and 1
+        texturePoint += Vector2.one / 2;
+
+        // Position between 0 and texture size (Offset in texture space)
+        texturePoint.x *= spriteRenderer.sprite.rect.width;
+        texturePoint.y *= spriteRenderer.sprite.rect.height;
+
+        // Position in texture space
+        texturePoint.x += spriteRenderer.sprite.rect.x;
+        texturePoint.y += spriteRenderer.sprite.rect.y;
+
+        return texturePoint;
     }
 
     private void ColorSprite(Collider2D collider)

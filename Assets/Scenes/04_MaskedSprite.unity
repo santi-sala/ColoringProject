@@ -1355,6 +1355,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 181461274320497698, guid: bd44eabfcf0f9cf48bf9a0d2997bcd74, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3521088547914101515, guid: bd44eabfcf0f9cf48bf9a0d2997bcd74, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1609,7 +1613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _brushColor: {r: 0.13964999, g: 0.665, b: 0.4898834, a: 1}
-  _brushSize: 300
+  _brushSize: 30
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
