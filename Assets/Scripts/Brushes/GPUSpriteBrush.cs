@@ -134,14 +134,13 @@ public class GPUSpriteBrush : MonoBehaviour
         _brushMaterial.SetTexture("_MainTex", newTexture);
         _brushMaterial.SetTexture("_CopyTexture", copyTexture);
         _brushMaterial.SetColor("_Color", _brushColor);
-        //_brushMaterial.SetColor("_Color", Random.ColorHSV());
         _brushMaterial.SetFloat("_BrushSize", _brushSize);
         _brushMaterial.SetVector("_UVPosition", texturePoint / spriteCopy.texture.width);
 
         RenderTexture renderTexture = new RenderTexture(newTexture.width, newTexture.height, 0, RenderTextureFormat.ARGB32, 10);
         renderTexture.useMipMap = true;
 
-        Graphics.Blit(copyTexture, renderTexture, _brushMaterial);
+        Graphics.Blit(newTexture, renderTexture, _brushMaterial);
 
         Graphics.CopyTexture(renderTexture, newTexture);
 
