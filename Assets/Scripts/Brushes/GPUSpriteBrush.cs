@@ -13,11 +13,13 @@ public class GPUSpriteBrush : MonoBehaviour
     [SerializeField] private float _brushSize;
     [SerializeField] private Material _brushMaterial;
     private Dictionary<int, Texture2D> _originalTextures = new Dictionary<int, Texture2D>();
+    private Dictionary<int, Texture2D> _editedTextures = new Dictionary<int, Texture2D>();
+    private Dictionary<int, RenderTexture> _renderTectures = new Dictionary<int, RenderTexture>();
 
     // Start is called before the first frame update
     void Start()
     {
-
+        Application.targetFrameRate = 60;
     }
 
     void Update()
@@ -99,9 +101,19 @@ public class GPUSpriteBrush : MonoBehaviour
 
         // Checking if we have the current original texture in the dictionary, if not adding it.
         int spriteIndexInHierarchy = _currentSpriteRenderer.transform.GetSiblingIndex();
+
+        Texture2D currentTexture = _currentSpriteRenderer.sprite.texture;
+
         if (!_originalTextures.ContainsKey(spriteIndexInHierarchy))
         {
-            _originalTextures.Add(spriteIndexInHierarchy, _currentSpriteRenderer.sprite.texture);
+            _originalTextures.Add(spriteIndexInHierarchy, currentTexture);
+            _editedTextures.Add(spriteIndexInHierarchy, new Texture2D(currentTexture.width, currentTexture.height));
+
+            RenderTexture newRenderTexture = new RenderTexture(currentTexture.width, currentTexture.height, 0, RenderTextureFormat.ARGB32, 10);
+            newRenderTexture.useMipMap = true;
+
+            _renderTectures.Add(spriteIndexInHierarchy, newRenderTexture);
+
         }
 
         ColorSpriteAtPosition(topCollider, rayHits[topIndex].point);
@@ -126,9 +138,12 @@ public class GPUSpriteBrush : MonoBehaviour
         Texture2D copyTexture = _originalTextures[currentSpriteIndex];
 
         // Creating a new texture to modify
-        Texture2D newTexture = new Texture2D(spriteCopy.texture.width, spriteCopy.texture.height);
+        Texture2D newTexture = _editedTextures[currentSpriteIndex];
 
-        Graphics.CopyTexture(spriteCopy.texture, newTexture);
+        if(spriteCopy.texture != newTexture)
+        {
+            Graphics.CopyTexture(spriteCopy.texture, newTexture);
+        }
 
         //Coloring using the GPU here
         _brushMaterial.SetTexture("_MainTex", newTexture);
@@ -137,8 +152,8 @@ public class GPUSpriteBrush : MonoBehaviour
         _brushMaterial.SetFloat("_BrushSize", _brushSize);
         _brushMaterial.SetVector("_UVPosition", texturePoint / spriteCopy.texture.width);
 
-        RenderTexture renderTexture = new RenderTexture(newTexture.width, newTexture.height, 0, RenderTextureFormat.ARGB32, 10);
-        renderTexture.useMipMap = true;
+        RenderTexture renderTexture = _renderTectures[currentSpriteIndex];
+        //renderTexture.useMipMap = true;
 
         Graphics.Blit(newTexture, renderTexture, _brushMaterial);
 
