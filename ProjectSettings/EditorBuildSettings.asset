@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/05_GPUMaskedSprite.unity
     guid: b20111f8ff6bffc47b8ab53627e0c34a
+  - enabled: 1
+    path: Assets/Scenes/06_ColoringGame.unity
+    guid: 31d3118b5f1b6064b8a15e1cfac6aa93
   m_configObjects: {}
