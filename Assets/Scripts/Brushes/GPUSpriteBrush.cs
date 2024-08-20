@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GPUSpriteBrush : MonoBehaviour
 {
+    //Singleton
+    public static GPUSpriteBrush Instance;
+
     [Header("Elements")]
     [SerializeField] private SpriteRenderer _currentSpriteRenderer;
 
@@ -15,6 +18,18 @@ public class GPUSpriteBrush : MonoBehaviour
     private Dictionary<int, Texture2D> _originalTextures = new Dictionary<int, Texture2D>();
     private Dictionary<int, Texture2D> _editedTextures = new Dictionary<int, Texture2D>();
     private Dictionary<int, RenderTexture> _renderTectures = new Dictionary<int, RenderTexture>();
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -189,5 +204,10 @@ public class GPUSpriteBrush : MonoBehaviour
         texturePoint.y += spriteRenderer.sprite.rect.y;
 
         return texturePoint;
+    }
+
+    public void SetBrushSize(float brushSize)
+    {
+        this._brushSize = brushSize;
     }
 }
