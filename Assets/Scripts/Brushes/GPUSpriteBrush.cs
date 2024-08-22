@@ -210,4 +210,9 @@ public class GPUSpriteBrush : MonoBehaviour
     {
         this._brushSize = brushSize;
     }
+
+    public void SetBrushColor(Color color)
+    {
+        _brushColor = color;
+    }
 }

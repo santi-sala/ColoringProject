@@ -5,25 +5,31 @@ using UnityEngine.UI;
 
 public class BrushSizeManagers : MonoBehaviour
 {
+    public static BrushSizeManagers Instance;
     [Header("Elements")]
     [SerializeField] private Image[] _brushSizeImages;
 
 
     [Header("Settings")]
     [SerializeField] private float[] _brushSizes;
-    [SerializeField] private Color _selectedColor = Color.yellow;
+    [SerializeField] private Color _selectedColor = Color.red;
     [SerializeField] private Color _unselectedColor = Color.gray;
+    private int _selectedBrushSizeIndex = 0;
     // Start is called before the first frame update
-    void Start()
-    {
-        BrushSizeButtonClickedCallback(0);
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+    
+
 
     public void BrushSizeButtonClickedCallback(int sizeIndex)
     {
@@ -33,6 +39,8 @@ public class BrushSizeManagers : MonoBehaviour
             return;
         }
         float targetBrushSize = _brushSizes[sizeIndex];
+
+        _selectedBrushSizeIndex = sizeIndex;
 
         GPUSpriteBrush.Instance.SetBrushSize(targetBrushSize);
 
@@ -47,6 +55,18 @@ public class BrushSizeManagers : MonoBehaviour
             //{
             //    _brushSizeImages[i].color = _unselectedColor;
             //}
+        }
+
+    }
+
+    public void SetSelectedColor(Color color)
+    {
+        _selectedColor = color;
+
+        for (int i = 0; i < _brushSizeImages.Length; i++)
+        {
+            _brushSizeImages[i].color = (i == _selectedBrushSizeIndex) ? _selectedColor : _unselectedColor;
+           
         }
 
     }
